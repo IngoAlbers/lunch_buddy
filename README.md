@@ -1,24 +1,6 @@
-# README
+# Lilly Jo Slack Bot
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+params date
+for example
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+`lilly_jo/?date=07-07-2017`
