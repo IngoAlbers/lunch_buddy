@@ -2,7 +2,8 @@ class MenusController < ActionController::Base
   def lilly_jo
     require 'open-uri'
 
-    io = open("https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{current_week}.pdf")
+    week = params[:week] || current_week
+    io = open("https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf")
     reader = PDF::Reader.new(io)
 
     str = []
