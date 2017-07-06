@@ -43,7 +43,6 @@ class MenusController < ActionController::Base
   end
 
   def sanitize(str)
-    #byebug
     str.force_encoding("ASCII-8BIT")
        .gsub(/#{"\x00|\xFE|\xFF".force_encoding("ASCII-8BIT")}/, '')
        .gsub(/#{"\xE4".force_encoding("ASCII-8BIT")}/, 'ae')
