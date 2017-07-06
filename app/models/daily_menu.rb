@@ -1,8 +1,12 @@
 class DailyMenu < ApplicationRecord
   before_validation :set_content
 
+  scope :of_today, -> { where(date: Date.today.beginning_of_day) }
+
+  RESTAURANTS = ['Lilly Jo']
+
   validates :date, :restaurant, :content, presence: true
-  validates :restaurant, inclusion: { in: ['Lilly Jo'] }
+  validates :restaurant, inclusion: { in: DailyMenu::RESTAURANTS }
 
   def broadcast
     message = "*Heute (#{date.strftime('%F')}) im #{self.restaurant}:*\n"
@@ -10,6 +14,16 @@ class DailyMenu < ApplicationRecord
 
     client = SlackBot.new
     client.chat_postMessage(channel: '#lunchtime', text: message, as_user: true)
+  end
+
+  def self.broadcast
+    of_today.each { |dm| dm.broadcast }
+  end
+
+  def self.gather
+    RESTAURANTS.each do |restaurant|
+      DailyMenu.create(restaurant: restaurant, date: Date.today)
+    end
   end
 
   private
