@@ -20,9 +20,9 @@
 # Learn more: http://github.com/javan/whenever
 
 every 1.day, at: '8:00 am' do
-  runner "DailyMenu.gather"
+  runner 'DailyMenu.gather'
 end
 
 every 1.day, at: '11:00 am' do
-  runner "DailyMenu.broadcast"
+  runner 'DailyMenu.broadcast'
 end

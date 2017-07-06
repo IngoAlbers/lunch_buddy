@@ -10,13 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170706125048) do
-
-  create_table "daily_menus", force: :cascade do |t|
-    t.datetime "date"
-    t.string "content"
-    t.string "restaurant"
-    t.index ["date", "restaurant"], name: "index_daily_menus_on_date_and_restaurant", unique: true
+ActiveRecord::Schema.define(version: 20_170_706_125_048) do
+  create_table 'daily_menus', force: :cascade do |t|
+    t.datetime 'date'
+    t.string 'content'
+    t.string 'restaurant'
+    t.index %w[date restaurant], name: 'index_daily_menus_on_date_and_restaurant', unique: true
   end
-
 end

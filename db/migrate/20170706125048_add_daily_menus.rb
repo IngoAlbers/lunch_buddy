@@ -6,6 +6,6 @@ class AddDailyMenus < ActiveRecord::Migration[5.1]
       t.string :restaurant
     end
 
-    add_index :daily_menus, [:date, :restaurant], unique: true
+    add_index :daily_menus, %i[date restaurant], unique: true
   end
 end

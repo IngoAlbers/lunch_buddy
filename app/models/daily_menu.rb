@@ -3,13 +3,13 @@ class DailyMenu < ApplicationRecord
 
   scope :of_today, -> { where(date: Date.today.beginning_of_day) }
 
-  RESTAURANTS = ['Lilly Jo']
+  RESTAURANTS = ['Lilly Jo'].freeze
 
   validates :date, :restaurant, :content, presence: true
   validates :restaurant, inclusion: { in: DailyMenu::RESTAURANTS }
 
   def broadcast
-    message = "*Heute (#{date.strftime('%F')}) im #{self.restaurant}:*\n"
+    message = "*Heute (#{date.strftime('%F')}) im #{restaurant}:*\n"
     message << content
 
     @client ||= SlackClient.new
@@ -47,7 +47,7 @@ class DailyMenu < ApplicationRecord
 
   def get_actual_text(reader)
     str = reader.objects.values.select { |v| v.class == Hash }.map { |v| v[:ActualText] }
-    sanitize(str.join())
+    sanitize(str.join)
   end
 
   def get_content(str, date)
@@ -62,7 +62,7 @@ class DailyMenu < ApplicationRecord
   end
 
   def sanitize(str)
-    str = str.force_encoding("ASCII-8BIT")
+    str = str.force_encoding('ASCII-8BIT')
              .gsub(/#{"\x00|\xFE|\xFF".force_encoding("ASCII-8BIT")}/, '')
              .gsub(/#{"\xE4".force_encoding("ASCII-8BIT")}/, 'aaee')
              .gsub(/#{"\xF6".force_encoding("ASCII-8BIT")}/, 'ooee')
