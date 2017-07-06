@@ -18,7 +18,7 @@ class MenusController < ActionController::Base
   rescue StandardError
     @str = 'Oops! Something went wrong. Please contact the botmaster.'
   ensure
-    post_message(@str)
+    post_message(@str, date)
   end
 
   private
@@ -56,10 +56,13 @@ class MenusController < ActionController::Base
     I18n.l(date, format: '%A', locale: :de)
   end
 
-  def post_message(message)
+  def post_message(message, date)
     return if message.nil?
 
+    text = "*Heute (#{l(date)}) im Lilly Jo:*\n"
+    text << message
+
     client = SlackBot.new
-    client.chat_postMessage(channel: '#lunchtime', text: message, as_user: true)
+    client.chat_postMessage(channel: '#lunchtime', text: text)
   end
 end
