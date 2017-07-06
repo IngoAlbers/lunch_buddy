@@ -8,17 +8,12 @@ class MenusController < ActionController::Base
     io = open("https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf")
     reader = PDF::Reader.new(io)
 
-    str = []
+    text = "*Heute (#{l(date)}) im Lilly Jo:*\n"
+    text << get_daily_menu(reader, date)
 
-    reader.objects.values.each do |v|
-      str << v[:ActualText] if v.class == Hash
-    end
-
-    @str = get_content(sanitize(str.join(' ')), date)
+    post_message(text, '#lunchtime')
   rescue StandardError
-    @str = 'Oops! Something went wrong. Please contact the botmaster.'
-  ensure
-    post_message(@str, date)
+    post_message('Oops! Something went wrong. Please contact the botmaster.', '#lunchtime')
   end
 
   private
@@ -31,37 +26,47 @@ class MenusController < ActionController::Base
     end
   end
 
-  def get_content(str, day)
-    day_start = formatted_day(day)
-    day_end = formatted_day(day + 1.day)
+  def get_daily_menu(reader, date)
+    actual_text = get_actual_text(reader)
+    get_content(actual_text, date)
+  end
 
-    if day_start == 'Freitag'
-      str[/#{day_start}(.*)/, 1]
+  def get_actual_text(reader)
+    str = reader.objects.values.select { |v| v.class == Hash }.map { |v| v[:ActualText] }
+    sanitize(str.join())
+  end
+
+  def get_content(str, date)
+    date_start = formatted_date(date)
+    date_end = formatted_date(date + 1.day)
+
+    if date_start == 'Freitag'
+      str[/#{date_start}(.*)/, 1]
     else
-      str[/#{day_start}(.*?)#{day_end}/, 1]
+      str[/#{date_start}(.*?)#{date_end}/, 1]
     end
   end
 
   def sanitize(str)
-    str.force_encoding("ASCII-8BIT")
-       .gsub(/#{"\x00|\xFE|\xFF".force_encoding("ASCII-8BIT")}/, '')
-       .gsub(/#{"\xE4".force_encoding("ASCII-8BIT")}/, 'ae')
-       .gsub(/#{"\xF6".force_encoding("ASCII-8BIT")}/, 'oe')
-       .gsub(/#{"\xFC".force_encoding("ASCII-8BIT")}/, 'ue')
-       .gsub(/#{"\xE9".force_encoding("ASCII-8BIT")}/, 'e')
+    str = str.force_encoding("ASCII-8BIT")
+             .gsub(/#{"\x00|\xFE|\xFF".force_encoding("ASCII-8BIT")}/, '')
+             .gsub(/#{"\xE4".force_encoding("ASCII-8BIT")}/, 'ae')
+             .gsub(/#{"\xF6".force_encoding("ASCII-8BIT")}/, 'oe')
+             .gsub(/#{"\xFC".force_encoding("ASCII-8BIT")}/, 'ue')
+             .gsub(/#{"\xE9".force_encoding("ASCII-8BIT")}/, 'e')
+
+    str.gsub('ae', 'ä')
+       .gsub('oe', 'ö')
+       .gsub('ue', 'ü')
   end
 
-  def formatted_day(date)
+  def formatted_date(date)
     I18n.l(date, format: '%A', locale: :de)
   end
 
-  def post_message(message, date)
-    return if message.nil?
-
-    text = "*Heute (#{l(date)}) im Lilly Jo:*\n"
-    text << message
-
+  def post_message(message, channel)
     client = SlackBot.new
-    client.chat_postMessage(channel: '#lunchtime', text: text)
+    client.chat_postMessage(channel: channel, text: message, as_user: true)
   end
 end
+
