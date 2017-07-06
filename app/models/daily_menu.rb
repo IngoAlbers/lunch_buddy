@@ -17,7 +17,7 @@ class DailyMenu < ApplicationRecord
   end
 
   def self.broadcast
-    of_today.each { |dm| dm.broadcast }
+    of_today.each(&:broadcast)
   end
 
   def self.gather
