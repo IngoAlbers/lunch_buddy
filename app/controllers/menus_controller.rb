@@ -8,12 +8,18 @@ class MenusController < ActionController::Base
     io = open("https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf")
     reader = PDF::Reader.new(io)
 
-    text = "*Heute (#{l(date)}) im Lilly Jo:*\n"
-    text << get_daily_menu(reader, date)
+    daily_menu = get_daily_menu(reader, date)
 
-    post_message(text, '#lunchtime')
+    if params[:send_chat_message]
+      message = "*Heute (#{l(date)}) im Lilly Jo:*\n"
+      message << daily_menu
+
+      post_message(message, '#lunchtime')
+    end
+
+    render json: { l(date) => daily_menu }
   rescue StandardError
-    post_message('Oops! Something went wrong. Please contact the botmaster.', '#lunchtime')
+    render json: { l(date) => 'error' }
   end
 
   private
@@ -28,7 +34,7 @@ class MenusController < ActionController::Base
 
   def get_daily_menu(reader, date)
     actual_text = get_actual_text(reader)
-    get_content(actual_text, date)
+    get_content(actual_text, date).strip
   end
 
   def get_actual_text(reader)
@@ -50,14 +56,15 @@ class MenusController < ActionController::Base
   def sanitize(str)
     str = str.force_encoding("ASCII-8BIT")
              .gsub(/#{"\x00|\xFE|\xFF".force_encoding("ASCII-8BIT")}/, '')
-             .gsub(/#{"\xE4".force_encoding("ASCII-8BIT")}/, 'ae')
-             .gsub(/#{"\xF6".force_encoding("ASCII-8BIT")}/, 'oe')
-             .gsub(/#{"\xFC".force_encoding("ASCII-8BIT")}/, 'ue')
+             .gsub(/#{"\xE4".force_encoding("ASCII-8BIT")}/, 'aaee')
+             .gsub(/#{"\xF6".force_encoding("ASCII-8BIT")}/, 'ooee')
+             .gsub(/#{"\xFC".force_encoding("ASCII-8BIT")}/, 'uuee')
              .gsub(/#{"\xE9".force_encoding("ASCII-8BIT")}/, 'e')
 
-    str.gsub('ae', 'ä')
-       .gsub('oe', 'ö')
-       .gsub('ue', 'ü')
+    # Workaround to make sure 'sauer' doesn't turn to 'säur'
+    str.gsub('aaee', 'ä')
+       .gsub('ooee', 'ö')
+       .gsub('uuee', 'ü')
   end
 
   def formatted_date(date)
