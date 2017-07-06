@@ -1,12 +1,12 @@
 class MenusController < ActionController::Base
-  def lilly_jo
+  def show
     date = if params[:date]
             Date.parse(params[:date])
           else
             Date.today
           end
 
-    daily_menu = DailyMenu.create(restaurant: 'lilly_jo', date: date)
+    daily_menu = DailyMenu.find_by(date: date.beginning_of_day)
 
     render json: { l(date) => daily_menu.content }
   rescue StandardError
