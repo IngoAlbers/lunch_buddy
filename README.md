@@ -1,5 +1,7 @@
 # Lilly Jo Slack Bot
 
+ENV['SLACK_API_TOKEN']
+
 params date
 for example
 
