@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  get 'lunch', to: 'menus#show'
+  resources :daily_menus, only: :index
 end
