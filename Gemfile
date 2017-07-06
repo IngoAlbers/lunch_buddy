@@ -14,8 +14,7 @@ gem 'i18n'
 gem 'pdf-reader'
 
 # Slack Bot
-gem 'celluloid-io'
-gem 'slack-ruby-bot'
+gem 'slack-ruby-client'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
