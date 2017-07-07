@@ -69,7 +69,7 @@ class DailyMenu < ApplicationRecord
              .gsub(/#{"\xFC".force_encoding("ASCII-8BIT")}/, 'uuee')
              .gsub(/#{"\xE9".force_encoding("ASCII-8BIT")}/, 'e')
 
-    # Workaround to make sure 'sauer' doesn't turn to 'säur'
+    # Workaround to make sure 'sauer' doesn't turn to 'saür'
     str.gsub('aaee', 'ä')
        .gsub('ooee', 'ö')
        .gsub('uuee', 'ü')
