@@ -19,10 +19,10 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.day, at: '8:00 am' do
+every :weekday, at: '8:00 am' do
   runner 'DailyMenu.gather'
 end
 
-every 1.day, at: '11:00 am' do
+every :weekday, at: '11:00 am' do
   runner 'DailyMenu.broadcast'
 end
