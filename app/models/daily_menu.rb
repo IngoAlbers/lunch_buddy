@@ -31,9 +31,7 @@ class DailyMenu < ApplicationRecord
   def set_content
     require 'open-uri'
 
-    date = self.date
     week = date.strftime('%W')
-
     io = open("https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf")
     reader = PDF::Reader.new(io)
 
