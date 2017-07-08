@@ -3,8 +3,7 @@ class Restaurant < ApplicationRecord
 
   validates :name, presence: true
 
-  def get_daily_menu
-    date = Date.today
+  def get_daily_menu(date = Date.today)
     return unless content = set_content(date)
 
     daily_menus.create(date: date, content: content)
