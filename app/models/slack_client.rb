@@ -7,6 +7,6 @@ class SlackClient < Slack::Web::Client
   private
 
   def chat_channel
-    Rails.env.production ? '#lunchtime' : '#lunchtimetest'
+    Rails.env.production? ? '#lunchtime' : '#lunchtimetest'
   end
 end
