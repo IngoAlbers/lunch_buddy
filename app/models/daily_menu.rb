@@ -9,11 +9,16 @@ class DailyMenu < ApplicationRecord
     message = "*Heute (#{date.strftime('%F')}) im #{restaurant.name}:*\n"
     message << content
 
-    @client ||= SlackClient.new
-    @client.chat_postMessage(channel: '#lunchtime', text: message, as_user: true)
+    slack_client.post_message(message)
   end
 
   def self.broadcast
     of_today.each(&:broadcast)
+  end
+
+  private
+
+  def slack_client
+    @client ||= SlackClient.new
   end
 end
