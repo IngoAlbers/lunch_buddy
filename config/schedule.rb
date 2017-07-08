@@ -19,6 +19,8 @@
 
 # Learn more: http://github.com/javan/whenever
 
+set :output, "#{path}/log/whenever.log"
+
 every :weekday, at: '9:30 am' do
   runner 'DailyMenu.gather'
 end
