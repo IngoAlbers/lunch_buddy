@@ -16,28 +16,24 @@ class Restaurant < ApplicationRecord
   private
 
   def set_content(date)
+    lilly_jo(date) if name == 'Lilly Jo'
+  end
+
+  def lilly_jo(date)
     require 'open-uri'
 
     week = date.strftime('%W')
     io = open("https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf")
     reader = PDF::Reader.new(io)
 
-    get_bla(reader, date)
+    str = reader.objects.values.select { |v| v.class == Hash }.map { |v| v[:ActualText] }.join
+
+    extract_menu(sanitize(str), date)&.strip
   end
 
-  def get_bla(reader, date)
-    actual_text = get_actual_text(reader)
-    get_content(actual_text, date)&.strip
-  end
-
-  def get_actual_text(reader)
-    str = reader.objects.values.select { |v| v.class == Hash }.map { |v| v[:ActualText] }
-    sanitize(str.join)
-  end
-
-  def get_content(str, date)
-    date_start = formatted_date(date)
-    date_end = formatted_date(date + 1.day)
+  def extract_menu(str, date)
+    date_start = I18n.l(date, format: '%A', locale: :de)
+    date_end = I18n.l(date + 1.day, format: '%A', locale: :de)
 
     if date_start == 'Freitag'
       str[/#{date_start}(.*)/, 1]
@@ -58,9 +54,5 @@ class Restaurant < ApplicationRecord
     str.gsub('aaee', 'ä')
        .gsub('ooee', 'ö')
        .gsub('uuee', 'ü')
-  end
-
-  def formatted_date(date)
-    I18n.l(date, format: '%A', locale: :de)
   end
 end
