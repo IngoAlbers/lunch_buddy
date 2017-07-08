@@ -3,13 +3,12 @@ class DailyMenu < ApplicationRecord
 
   scope :of_today, -> { where(date: Date.today.beginning_of_day) }
 
-  RESTAURANTS = ['Lilly Jo'].freeze
+  belongs_to :restaurant
 
-  validates :date, :restaurant, :content, presence: true
-  validates :restaurant, inclusion: { in: DailyMenu::RESTAURANTS }
+  validates :date, :content, presence: true
 
   def broadcast
-    message = "*Heute (#{date.strftime('%F')}) im #{restaurant}:*\n"
+    message = "*Heute (#{date.strftime('%F')}) im #{restaurant.name}:*\n"
     message << content
 
     @client ||= SlackClient.new
@@ -21,7 +20,7 @@ class DailyMenu < ApplicationRecord
   end
 
   def self.gather
-    RESTAURANTS.each do |restaurant|
+    Restaurant.all.each do |restaurant|
       DailyMenu.create(restaurant: restaurant, date: Date.today)
     end
   end
