@@ -1,9 +1,7 @@
 class DailyMenu < ApplicationRecord
-  before_validation :set_content
+  belongs_to :restaurant
 
   scope :of_today, -> { where(date: Date.today.beginning_of_day) }
-
-  belongs_to :restaurant
 
   validates :date, :content, presence: true
 
