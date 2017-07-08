@@ -22,7 +22,7 @@
 set :output, "#{path}/log/whenever.log"
 
 every :weekday, at: '9:30 am' do
-  runner 'Restaurant.get_daily_menus'
+  runner 'Restaurant.gather_daily_menus'
 end
 
 every :weekday, at: '11:00 am' do

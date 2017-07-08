@@ -3,14 +3,14 @@ class Restaurant < ApplicationRecord
 
   validates :name, presence: true
 
-  def get_daily_menu(date = Date.today)
+  def gather_daily_menu(date = Date.today)
     return unless content = set_content(date)
 
     daily_menus.create(date: date, content: content)
   end
 
-  def self.get_daily_menus
-    all.each(&:get_daily_menu)
+  def self.gather_daily_menus(date = Date.today)
+    all.each { |restaurant| restaurant.gather_daily_menu(date) }
   end
 
   private
