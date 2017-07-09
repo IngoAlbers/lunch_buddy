@@ -14,6 +14,32 @@ This application uses [whenever](https://github.com/javan/whenever) for the cron
 Make sure that cron has access to the required environment variable `SLACK_API_TOKEN`.
 
 ## Contributing
+If you want to add a new restaurant you only need to:
+
+1. Create the model:
+
+`app/models/restaurant/new_restaurant.rb`
+
+2. Let it inherit from `BaseRestaurant`
+```ruby
+module Restaurant
+  class NewRestaurant < BaseRestaurant
+    def set_content(date); end
+  end
+end
+```
+
+3. Implement the `set_content(date)` method. It should return a single string containing the menu of the day.
+```ruby
+def set_content(date)
+  date.friday? ? 'Fisch' : 'Schnitzel'
+end
+```
+
+See `app/models/restaurant/lilly_jo.rb` for a working example.
+
+In general any contribution is appreciated. To do so just:
+
 1. Fork the repository
 2. Create a branch (`git checkout -b new-branch`)
 3. Commit your changes (`git commit -am 'Add great new thing'`)
