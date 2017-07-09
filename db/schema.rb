@@ -21,7 +21,8 @@ ActiveRecord::Schema.define(version: 20170706125048) do
   end
 
   create_table "restaurants", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "type", null: false
+    t.index ["type"], name: "index_restaurants_on_type", unique: true
   end
 
 end

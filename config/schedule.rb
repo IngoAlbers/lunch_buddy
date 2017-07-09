@@ -26,5 +26,5 @@ every :weekday, at: '9:30 am' do
 end
 
 every :weekday, at: '11:00 am' do
-  runner 'DailyMenu.broadcast'
+  runner 'Restaurant::DailyMenu.broadcast'
 end

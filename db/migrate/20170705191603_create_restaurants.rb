@@ -1,7 +1,9 @@
 class CreateRestaurants < ActiveRecord::Migration[5.1]
   def change
     create_table :restaurants do |t|
-      t.string :name, null: false
+      t.string :type, null: false
     end
+
+    add_index :restaurants, :type, unique: true
   end
 end
