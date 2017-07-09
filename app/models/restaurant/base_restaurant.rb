@@ -7,6 +7,7 @@ module Restaurant
     validates :type, presence: true
 
     def self.gather_daily_menu(date = Date.today)
+      return if self == BaseRestaurant
       return unless (restaurant = first_or_create)
       return unless (content = restaurant.set_content(date))
 
