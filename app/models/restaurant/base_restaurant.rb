@@ -8,10 +8,10 @@ module Restaurant
 
     def self.gather_daily_menu(date = Date.today)
       return if self == BaseRestaurant
-      return unless (restaurant = first_or_create)
-      return unless (content = restaurant.set_content(date))
+      restaurant = first_or_create
+      content = restaurant.set_content(date)
 
-      restaurant.daily_menus.create(date: date, content: content)
+      restaurant.daily_menus.create(date: date, content: content) if content.present?
     end
 
     def set_content(date); end
