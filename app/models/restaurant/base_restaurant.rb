@@ -9,11 +9,14 @@ module Restaurant
     def self.gather_daily_menu(date = Date.today)
       return if self == BaseRestaurant
       restaurant = first_or_create
-      content = restaurant.set_content(date)
 
-      restaurant.daily_menus.create(date: date, content: content) if content.present?
+      restaurant.get_contents(date).each do |content|
+        restaurant.daily_menus.create(date: date, content: content)
+      end
     end
 
-    def set_content(date); end
+    def get_contents(date)
+      []
+    end
   end
 end

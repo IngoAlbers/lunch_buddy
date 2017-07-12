@@ -24,15 +24,15 @@ If you want to add a new restaurant you only need to:
 ```ruby
 module Restaurant
   class NewRestaurant < BaseRestaurant
-    def set_content(date); end
+    def get_contents(date); end
   end
 end
 ```
 
-3. Implement the `set_content(date)` method. It should return a single string containing the menu of the day.
+3. Implement the `get_contents(date)` method. It should return an array of strings containing the menus of the day.
 ```ruby
-def set_content(date)
-  date.friday? ? 'Fisch' : 'Schnitzel'
+def get_contents(date)
+  date.friday? ? ['Fisch'] : ['Schnitzel', 'Moules et frites']
 end
 ```
 
