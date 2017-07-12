@@ -15,6 +15,8 @@ module Restaurant
       end
     end
 
-    def get_contents(date); end
+    def get_contents(date)
+      []
+    end
   end
 end
