@@ -1,28 +1,44 @@
+require 'open-uri'
+
 module Restaurant
   class LillyJo < BaseRestaurant
-    def set_content(date)
-      require 'open-uri'
 
+    def get_contents(date)
       week = date.strftime('%W')
-      io = open("https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf")
-      reader = PDF::Reader.new(io)
+      current_day = I18n.l(date, format: '%A', locale: :de)
+      url = "https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf"
 
-      str = reader.objects.values.select { |v| v.class == Hash }.map { |v| v[:ActualText] }.join
-
-      extract_menu(sanitize(str), date)&.strip
+      extract_menu(url, current_day)
     end
 
     private
 
-    def extract_menu(str, date)
-      date_start = I18n.l(date, format: '%A', locale: :de)
-      date_end = I18n.l(date + 1.day, format: '%A', locale: :de)
+    def extract_menu(url, current_day)
+      PDF::Reader.new(open(url))
+        .objects
+        .values
+        .select { |v| v.class == Hash }
+        .map { |v| v[:ActualText] }
+        .inject([[]], &method(:split_on_weekday_reducer))
+        .group_by(&:first)[current_day]
+        .first
+        .drop(1)
+        .inject([[]], &method(:split_on_consecutive_nil_reducer))
+        .map(&:join)
+        .map(&method(:sanitize))
+        .map(&:squish)
+        .reject { |x| x == "" }
+    end
 
-      if date_start == 'Freitag'
-        str[/#{date_start}(.*)/, 1]
-      else
-        str[/#{date_start}(.*?)#{date_end}/, 1]
-      end
+    def split_on_weekday_reducer(acc, t)
+      *days, day = acc
+      weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"]
+      weekdays.include?(t) ? [*acc, [t]] : [*days, [*day, t]]
+    end
+
+    def split_on_consecutive_nil_reducer(acc, t)
+      *segments, last_segment = acc
+      last_segment.last.nil? && t.nil? ? [*acc, [t]] : [*segments, [*last_segment, t]]
     end
 
     def sanitize(str)
