@@ -6,20 +6,21 @@ module Restaurant
 
     validates :date, :content, presence: true
 
-    def broadcast
-      message = "*Heute (#{date.strftime('%F')}) im #{restaurant.class.name.demodulize}:*\n"
-      message << content
-
-      slack_client.post_message(message)
-    end
-
     def self.broadcast
-      of_today.each(&:broadcast)
+      of_today.group_by(&:restaurant).each_pair do |restaurant, daily_menus|
+        message = "*Heute (#{daily_menus.first.date.strftime('%F')}) im #{restaurant.class.name.demodulize}:*\n"
+
+        daily_menus.each do |daily_menu|
+          message << "• #{daily_menu.content}\n"
+        end
+
+        slack_client.post_message(message)
+      end
     end
 
     private
 
-    def slack_client
+    def self.slack_client
       @client ||= SlackClient.new
     end
   end
