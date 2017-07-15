@@ -20,8 +20,6 @@ module Restaurant
       end
     end
 
-    private
-
     def self.slack_client
       @client ||= SlackClient.new
     end
