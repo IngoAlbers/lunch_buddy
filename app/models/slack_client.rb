@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'slack-ruby-client'
 class SlackClient < Slack::Web::Client
   def post_message(message)

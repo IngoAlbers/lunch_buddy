@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 
 module Restaurant
   class LillyJo < BaseRestaurant
-
     def get_contents(date)
       week = date.strftime('%W')
       current_day = I18n.l(date, format: '%A', locale: :de)
@@ -15,24 +16,24 @@ module Restaurant
 
     def extract_menu(url, current_day)
       PDF::Reader.new(open(url))
-        .objects
-        .values
-        .select { |v| v.class == Hash }
-        .map { |v| v[:ActualText] }
-        .inject([[]], &method(:split_on_weekday_reducer))
-        .group_by(&:first)[current_day]
-        .first
-        .drop(1)
-        .inject([[]], &method(:split_on_consecutive_nil_reducer))
-        .map(&:join)
-        .map(&method(:sanitize))
-        .map(&:squish)
-        .reject { |x| x == "" }
+                 .objects
+                 .values
+                 .select { |v| v.class == Hash }
+                 .map { |v| v[:ActualText] }
+                 .inject([[]], &method(:split_on_weekday_reducer))
+                 .group_by(&:first)[current_day]
+                 .first
+                 .drop(1)
+                 .inject([[]], &method(:split_on_consecutive_nil_reducer))
+                 .map(&:join)
+                 .map(&method(:sanitize))
+                 .map(&:squish)
+                 .reject { |x| x == '' }
     end
 
     def split_on_weekday_reducer(acc, t)
       *days, day = acc
-      weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"]
+      weekdays = %w[Montag Dienstag Mittwoch Donnerstag Freitag]
       weekdays.include?(t) ? [*acc, [t]] : [*days, [*day, t]]
     end
 

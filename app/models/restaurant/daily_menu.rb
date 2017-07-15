@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Restaurant
   class DailyMenu < ApplicationRecord
     belongs_to :restaurant, class_name: 'BaseRestaurant', foreign_key: 'restaurant_id', inverse_of: :daily_menus

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDailyMenus < ActiveRecord::Migration[5.1]
   def change
     create_table :daily_menus do |t|

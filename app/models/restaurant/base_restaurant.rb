@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Restaurant
   class BaseRestaurant < ApplicationRecord
     self.table_name = 'restaurants'
@@ -15,7 +17,7 @@ module Restaurant
       end
     end
 
-    def get_contents(date)
+    def get_contents(_date)
       []
     end
   end
