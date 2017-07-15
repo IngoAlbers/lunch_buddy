@@ -26,6 +26,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # Use rspec for testing
   gem 'rspec-rails'
+  gem 'webmock'
 end
 
 group :development do
