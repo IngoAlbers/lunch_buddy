@@ -10,7 +10,7 @@ module Restaurant
 
     def self.broadcast
       of_today.group_by(&:restaurant).each_pair do |restaurant, daily_menus|
-        message = "*Heute (#{daily_menus.first.date.strftime('%F')}) im #{restaurant.class.name.demodulize}:*\n"
+        message = String.new("*Heute (#{Date.today.strftime('%F')}) im #{restaurant.class.name.demodulize}:*\n")
 
         daily_menus.each do |daily_menu|
           message << "• #{daily_menu.content}\n"
