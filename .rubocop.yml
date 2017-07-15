@@ -1,0 +1,12 @@
+AllCops:
+  Excludes:
+    - db/schema.rb
+  Rails:
+    Enabled: true
+  TargetRubyVersion: 2.4
+
+Metrics/LineLength:
+  Max: 120
+
+Documentation:
+  Enabled: false
