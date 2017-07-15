@@ -1,8 +1,6 @@
 AllCops:
-  Excludes:
+  Exclude:
     - db/schema.rb
-  Rails:
-    Enabled: true
   TargetRubyVersion: 2.4
 
 Metrics/LineLength:
