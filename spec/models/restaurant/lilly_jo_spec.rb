@@ -9,7 +9,7 @@ RSpec.describe Restaurant::LillyJo, type: :model do
     expect(lilly_jo.type).to eq('Restaurant::LillyJo')
   end
 
-  describe 'get_contents' do
+  describe '#get_contents' do
     it 'returns the correct menus for specified day' do
       date = Date.parse('19-7-2017')
       menus = ['Tofu-Gulasch mit Erbsenpolenta', 'Hackbraten an Kräuter-Rahmsauce Kartoffelstock und junge Erbsen']
