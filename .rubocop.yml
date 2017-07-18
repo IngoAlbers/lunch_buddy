@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - db/schema.rb
+    - vendor/**/*
   TargetRubyVersion: 2.4
 
 Metrics/LineLength:
