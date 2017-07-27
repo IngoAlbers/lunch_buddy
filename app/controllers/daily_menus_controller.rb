@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DailyMenusController < ActionController::Base
+class DailyMenusController < ApplicationController
   def index
     render json: DailyMenu.of_today
   end
