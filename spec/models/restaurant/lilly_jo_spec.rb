@@ -13,7 +13,7 @@ RSpec.describe Restaurant::LillyJo, type: :model do
     it 'returns the correct menus for specified day' do
       date = Date.parse('19-7-2017')
       menus = [
-        'Köstliche Sprossen mit Tofu-Gulasch mit Erbsenpolenta', 
+        'Köstliche Sprossen mit Tofu-Gulasch mit Erbsenpolenta',
         'Köstliche Sprossen mit Hackbraten an Kräuter-Rahmsauce Kartoffelstock und junge Erbsen'
       ]
 
