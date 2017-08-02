@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
 Slack.configure do |config|
-  config.token = ENV['SLACK_API_TOKEN']
-  raise 'Missing ENV[SLACK_API_TOKEN]!' unless config.token
+  config.token = ENV['SLACK_API_TOKEN'] || 'NO_VALID_SLACK_API_TOKEN'
 end
