@@ -29,6 +29,7 @@ module Restaurant
                  .map(&method(:sanitize))
                  .map(&:squish)
                  .reject { |x| x == '' }
+                 .map(&method(:sprossify))
     end
 
     def split_on_weekday_reducer(acc, t)
@@ -54,6 +55,10 @@ module Restaurant
       str.gsub('aaee', 'ä')
          .gsub('ooee', 'ö')
          .gsub('uuee', 'ü')
+    end
+
+    def sprossify(str)
+      "Köstliche Sprossen mit #{str}"
     end
   end
 end
