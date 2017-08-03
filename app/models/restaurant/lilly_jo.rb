@@ -58,7 +58,11 @@ module Restaurant
     end
 
     def sprossify(str)
-      "Köstliche Sprossen mit #{str}"
+      [
+        'Köstliche Sprossen',
+        str.downcase.start_with?('auf ') ? nil : 'mit',
+        str
+      ].compact.join(' ')
     end
   end
 end
