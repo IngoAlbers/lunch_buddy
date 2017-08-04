@@ -28,17 +28,16 @@ module Restaurant
 
     def current_day_fragments(url, current_day)
       all_fragments(url).inject([[]], &method(:split_on_weekday_reducer))
-                 .group_by(&:first)[current_day]
-                 .first
-                 .drop(1)
+                        .group_by(&:first)[current_day]
+                        .first
+                        .drop(1)
     end
 
     def menu_fragments(url, current_day)
-      current_day_fragments(url, current_day)
-                 .inject([[]], &method(:split_on_consecutive_nil_reducer))
-                 .map(&:join)
-                 .map(&method(:sanitize))
-                 .reject { |x| x == '' }
+      current_day_fragments(url, current_day).inject([[]], &method(:split_on_consecutive_nil_reducer))
+                                             .map(&:join)
+                                             .map(&method(:sanitize))
+                                             .reject { |x| x == '' }
     end
 
     def split_on_weekday_reducer(acc, t)
