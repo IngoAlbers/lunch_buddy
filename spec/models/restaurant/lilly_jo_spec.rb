@@ -13,8 +13,8 @@ RSpec.describe Restaurant::LillyJo, type: :model do
     it 'returns the correct menus for specified day' do
       date = Date.parse('02-08-2017')
       menus = [
-        'Köstliche Sprossen mit indisches Gemüsecurry mit gerösteten Cashewkernen und Naan Brot',
-        'Köstliche Sprossen auf Parmaschinken gebratene Maispoulardenbrust Kräuterjus Kartoffelstock buntes Mischgemüse'
+        'Köstliche Sprossen mit indisches Gemüsecurry mit gerösteten Cashewkernen und Naan Brot und so viel Brot wie man mag',
+        'Köstliche Sprossen auf Parmaschinken gebratene Maispoulardenbrust Kräuterjus Kartoffelstock buntes Mischgemüse und so viel Brot wie man mag'
       ]
 
       stub_request(:get, 'https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-31.pdf')
