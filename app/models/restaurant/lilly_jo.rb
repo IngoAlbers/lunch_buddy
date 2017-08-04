@@ -15,21 +15,29 @@ module Restaurant
     private
 
     def extract_menu(url, current_day)
+      menu_fragments(url, current_day).map(&method(:funnify))
+    end
+
+    def all_fragments(url)
       PDF::Reader.new(open(url))
                  .objects
                  .values
                  .select { |v| v.class == Hash }
                  .map { |v| v[:ActualText] }
-                 .inject([[]], &method(:split_on_weekday_reducer))
-                 .group_by(&:first)[current_day]
-                 .first
-                 .drop(1)
-                 .inject([[]], &method(:split_on_consecutive_nil_reducer))
-                 .map(&:join)
-                 .map(&method(:sanitize))
-                 .map(&:squish)
-                 .reject { |x| x == '' }
-                 .map(&method(:sprossify))
+    end
+
+    def current_day_fragments(url, current_day)
+      all_fragments(url).inject([[]], &method(:split_on_weekday_reducer))
+                        .group_by(&:first)[current_day]
+                        .first
+                        .drop(1)
+    end
+
+    def menu_fragments(url, current_day)
+      current_day_fragments(url, current_day).inject([[]], &method(:split_on_consecutive_nil_reducer))
+                                             .map(&:join)
+                                             .map(&method(:sanitize))
+                                             .reject { |x| x == '' }
     end
 
     def split_on_weekday_reducer(acc, t)
@@ -55,6 +63,12 @@ module Restaurant
       str.gsub('aaee', 'ä')
          .gsub('ooee', 'ö')
          .gsub('uuee', 'ü')
+         .squish
+    end
+
+    def funnify(str)
+      sprossified = sprossify(str)
+      brotify(sprossified)
     end
 
     def sprossify(str)
@@ -63,6 +77,10 @@ module Restaurant
         str.downcase.start_with?('auf ') ? nil : 'mit',
         str
       ].compact.join(' ')
+    end
+
+    def brotify(str)
+      "#{str} und so viel Brot wie man mag"
     end
   end
 end
