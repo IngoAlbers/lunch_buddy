@@ -22,17 +22,17 @@ RSpec.describe Restaurant::LillyJo, type: :model do
 
   def menu1
     [
-      'Köstliche Sprossen mit ',
-      'indisches Gemüsecurry mit gerösteten Cashewkernen und Naan Brot ',
+      'Köstliche Sprossen mit',
+      '*indisches Gemüsecurry mit gerösteten Cashewkernen und Naan Brot*',
       'und so viel Brot wie man mag'
-    ].join
+    ].join(' ')
   end
 
   def menu2
     [
-      'Köstliche Sprossen ',
-      'auf Parmaschinken gebratene Maispoulardenbrust Kräuterjus Kartoffelstock buntes Mischgemüse ',
+      'Köstliche Sprossen',
+      '*auf Parmaschinken gebratene Maispoulardenbrust Kräuterjus Kartoffelstock buntes Mischgemüse*',
       'und so viel Brot wie man mag'
-    ].join
+    ].join(' ')
   end
 end

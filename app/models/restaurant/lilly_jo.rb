@@ -67,20 +67,25 @@ module Restaurant
     end
 
     def funnify(str)
-      sprossified = sprossify(str)
+      boldified = boldify(str)
+      sprossified = sprossify(boldified)
       brotify(sprossified)
     end
 
     def sprossify(str)
       [
         'Köstliche Sprossen',
-        str.downcase.start_with?('auf ') ? nil : 'mit',
+        str.downcase.start_with?('*auf ') ? nil : 'mit',
         str
       ].compact.join(' ')
     end
 
     def brotify(str)
       "#{str} und so viel Brot wie man mag"
+    end
+
+    def boldify(str)
+      "*#{str}*"
     end
   end
 end
