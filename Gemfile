@@ -15,6 +15,9 @@ gem 'i18n'
 # PDF parsing
 gem 'pdf-reader'
 
+# HTML/XML parsing
+gem 'nokogiri'
+
 # Slack Bot
 gem 'slack-ruby-client'
 
