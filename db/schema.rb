@@ -12,10 +12,13 @@
 
 ActiveRecord::Schema.define(version: 20170712200530) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "daily_menus", force: :cascade do |t|
     t.datetime "date", null: false
     t.string "content", null: false
-    t.integer "restaurant_id", null: false
+    t.bigint "restaurant_id", null: false
     t.index ["restaurant_id"], name: "index_daily_menus_on_restaurant_id"
   end
 
@@ -24,4 +27,5 @@ ActiveRecord::Schema.define(version: 20170712200530) do
     t.index ["type"], name: "index_restaurants_on_type", unique: true
   end
 
+  add_foreign_key "daily_menus", "restaurants", on_delete: :cascade
 end
