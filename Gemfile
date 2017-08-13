@@ -10,6 +10,7 @@ gem 'pg'
 gem 'puma', '~> 3.7'
 
 gem 'turbolinks'
+gem 'webpacker'
 
 # Localization
 gem 'i18n'
