@@ -9,9 +9,10 @@ gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 
-gem 'turbolinks'
-gem 'webpacker'
 gem 'execjs'
+gem 'turbolinks'
+gem 'uglifier'
+gem 'webpacker'
 
 # Localization
 gem 'i18n'
