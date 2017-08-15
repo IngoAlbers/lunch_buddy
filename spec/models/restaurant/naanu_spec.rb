@@ -20,4 +20,10 @@ RSpec.describe Restaurant::Naanu, type: :model do
                                  'mit Honig und Ingwer verfeinert'
     end
   end
+
+  describe '#name' do
+    it 'returns the correct name' do
+      expect(naanu.name).to eq('Naanu')
+    end
+  end
 end

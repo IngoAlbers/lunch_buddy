@@ -18,6 +18,12 @@ RSpec.describe Restaurant::LillyJo, type: :model do
     end
   end
 
+  describe '#name' do
+    it 'returns the correct name' do
+      expect(lilly_jo.name).to eq('Lilly Jo')
+    end
+  end
+
   private
 
   def menu1

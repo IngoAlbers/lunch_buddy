@@ -20,4 +20,10 @@ RSpec.describe Restaurant::ErnstYoung, type: :model do
       expect(menus.second).to include('Röstipastetli')
     end
   end
+
+  describe '#name' do
+    it 'returns the correct name' do
+      expect(ernst_young.name).to eq('Ernst & Young')
+    end
+  end
 end

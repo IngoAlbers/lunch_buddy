@@ -20,5 +20,9 @@ module Restaurant
     def get_contents(_date)
       []
     end
+
+    def name
+      self.class.name.demodulize
+    end
   end
 end

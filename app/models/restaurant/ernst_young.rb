@@ -13,5 +13,9 @@ module Restaurant
 
       menus.map { |menu| menu.content.strip.split("\n\n").first.strip.tr("\n", ' ') }
     end
+
+    def name
+      'Ernst & Young'
+    end
   end
 end

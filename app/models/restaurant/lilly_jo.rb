@@ -12,6 +12,10 @@ module Restaurant
       extract_menu(url, current_day)
     end
 
+    def name
+      'Lilly Jo'
+    end
+
     private
 
     def extract_menu(url, current_day)
