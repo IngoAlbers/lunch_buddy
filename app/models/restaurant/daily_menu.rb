@@ -15,6 +15,7 @@ module Restaurant
         daily_menus.each do |daily_menu|
           message << "• #{daily_menu.content}\n"
         end
+        message << ':blank:'
 
         slack_client.post_message(message)
       end
