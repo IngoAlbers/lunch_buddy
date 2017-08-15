@@ -11,7 +11,7 @@ module Restaurant
       menus = doc.css("table.menu tr[data-date='#{date.strftime('%F')}'] div.txt-hold")
       menus.css('.txt-slide').remove
 
-      menus.map { |menu| menu.content.strip }
+      menus.map { |menu| menu.content.strip.split("\n\n").first.strip.tr("\n", ' ') }
     end
   end
 end
