@@ -57,7 +57,7 @@ module Restaurant
 
     def sanitize(str)
       str = str.dup.force_encoding('ASCII-8BIT')
-               .gsub(/#{"\x00|\xFE|\xFF".dup.force_encoding("ASCII-8BIT")}/, '')
+               .gsub(/#{"\x00|\xFE|\xFF|\xA8".dup.force_encoding("ASCII-8BIT")}/, '')
                .gsub(/#{"\xE4".dup.force_encoding("ASCII-8BIT")}/, 'aaee')
                .gsub(/#{"\xF6".dup.force_encoding("ASCII-8BIT")}/, 'ooee')
                .gsub(/#{"\xFC".dup.force_encoding("ASCII-8BIT")}/, 'uuee')
