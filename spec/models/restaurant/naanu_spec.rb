@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Restaurant::Naanu, type: :model do
-  let(:naanu) { Restaurant::Naanu.create! }
+  let(:naanu) { create(:naanu) }
 
   it 'has the correct type' do
     expect(naanu.type).to eq('Restaurant::Naanu')

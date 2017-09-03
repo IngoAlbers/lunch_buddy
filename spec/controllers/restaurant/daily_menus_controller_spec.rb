@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Restaurant::DailyMenusController, type: :controller do
-  let(:lilly_jo) { Restaurant::LillyJo.create! }
+  let(:lilly_jo) { create(:lilly_jo) }
   let!(:menu_today) { Restaurant::DailyMenu.create(restaurant: lilly_jo, date: Date.today, content: 'Schnitzel') }
   let!(:menu_yesterday) { Restaurant::DailyMenu.create(restaurant: lilly_jo, date: Date.yesterday, content: 'Fisch') }
 
