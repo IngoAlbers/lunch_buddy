@@ -4,6 +4,6 @@ Rails.application.routes.draw do
   root 'restaurant/daily_menus#index'
 
   namespace :restaurant do
-    resources :daily_menus, only: :index
+    resources :daily_menus, only: %i[index show]
   end
 end
