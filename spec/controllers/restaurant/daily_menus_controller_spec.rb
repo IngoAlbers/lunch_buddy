@@ -3,9 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Restaurant::DailyMenusController, type: :controller do
-  let(:lilly_jo) { create(:lilly_jo) }
-  let!(:menu_today) { Restaurant::DailyMenu.create(restaurant: lilly_jo, date: Date.today, content: 'Schnitzel') }
-  let!(:menu_yesterday) { Restaurant::DailyMenu.create(restaurant: lilly_jo, date: Date.yesterday, content: 'Fisch') }
+  let!(:menu_today) { create(:daily_menu) }
+  let!(:menu_yesterday) { create(:daily_menu, :of_yesterday, content: 'Fisch') }
 
   describe 'GET index' do
     it 'has a 200 status code' do
