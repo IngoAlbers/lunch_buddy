@@ -8,7 +8,7 @@ FactoryGirl.define do
   factory :daily_menu, class: Restaurant::DailyMenu do
     restaurant { Restaurant::LillyJo.first || create(:lilly_jo) }
     date Date.today
-    content 'Schnitzel'
+    content { Faker::Food.dish }
 
     trait :of_yesterday do
       date Date.yesterday

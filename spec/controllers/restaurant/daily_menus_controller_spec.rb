@@ -3,10 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe Restaurant::DailyMenusController, type: :controller do
-  let!(:menu_today) { create(:daily_menu) }
-  let!(:menu_yesterday) { create(:daily_menu, :of_yesterday, content: 'Fisch') }
+  let(:menu_today) { create(:daily_menu) }
+  let(:menu_yesterday) { create(:daily_menu, :of_yesterday) }
 
   describe 'GET index' do
+    before do
+      menu_today
+      menu_yesterday
+    end
+
     it 'has a 200 status code' do
       get :index
       expect(response.status).to eq(200)
