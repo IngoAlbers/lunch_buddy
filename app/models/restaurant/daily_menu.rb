@@ -9,7 +9,7 @@ module Restaurant
     validates :date, :content, presence: true
 
     def self.broadcast
-      of_today.group_by(&:restaurant).each_pair do |restaurant, daily_menus|
+      of_today.order(:restaurant_id).group_by(&:restaurant).each_pair do |restaurant, daily_menus|
         message = String.new("*Heute (#{Date.today.strftime('%F')}) im #{restaurant.name}:*\n")
 
         daily_menus.each do |daily_menu|
