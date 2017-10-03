@@ -9,6 +9,8 @@ module Restaurant
       current_day = I18n.l(date, format: '%A', locale: :de)
       url = "https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf"
 
+      return [] unless ensure_current_year(url)
+
       extract_menu(url, current_day)
     end
 
@@ -22,19 +24,11 @@ module Restaurant
       menu_fragments(url, current_day).map(&method(:funnify))
     end
 
-    def all_fragments(url)
-      PDF::Reader.new(open(url))
-                 .objects
-                 .values
-                 .select { |v| v.class == Hash }
-                 .map { |v| v[:ActualText] }
-    end
-
     def current_day_fragments(url, current_day)
-      all_fragments(url).inject([[]], &method(:split_on_weekday_reducer))
-                        .group_by(&:first)[current_day]
-                        .first
-                        .drop(1)
+      pdf_reader(url).inject([[]], &method(:split_on_weekday_reducer))
+                     .group_by(&:first)[current_day]
+                     .first
+                     .drop(1)
     end
 
     def menu_fragments(url, current_day)
@@ -92,6 +86,18 @@ module Restaurant
 
     def boldify(str)
       "*#{str}*"
+    end
+
+    def ensure_current_year(url)
+      pdf_reader(url).include?(Date.current.year.to_s)
+    end
+
+    def pdf_reader(url)
+      @pdf_reader ||= PDF::Reader.new(open(url))
+                                 .objects
+                                 .values
+                                 .select { |v| v.class == Hash }
+                                 .map { |v| v[:ActualText] }
     end
   end
 end
