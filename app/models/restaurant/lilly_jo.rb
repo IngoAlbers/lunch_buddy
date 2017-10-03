@@ -5,13 +5,8 @@ require 'open-uri'
 module Restaurant
   class LillyJo < BaseRestaurant
     def get_contents(date)
-      week = date.strftime('%W')
       current_day = I18n.l(date, format: '%A', locale: :de)
-      url = "https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf"
-
-      return [] unless ensure_current_year(url)
-
-      extract_menu(url, current_day)
+      extract_menu(menu_url(date), current_day)
     end
 
     def name
@@ -89,7 +84,10 @@ module Restaurant
     end
 
     def ensure_current_year(url)
-      pdf_reader(url).include?(Date.current.year.to_s)
+      return true if pdf_reader(url)&.include?(Date.current.year.to_s)
+
+      @pdf_reader = nil
+      false
     end
 
     def pdf_reader(url)
@@ -98,6 +96,17 @@ module Restaurant
                                  .values
                                  .select { |v| v.class == Hash }
                                  .map { |v| v[:ActualText] }
+    end
+
+    def menu_url(date)
+      week = date.strftime('%W')
+      url = "https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf"
+
+      ensure_current_year(url) ? url : fallback_url(url)
+    end
+
+    def fallback_url(url)
+      "#{url.split('.pdf').first}-1.pdf"
     end
   end
 end
