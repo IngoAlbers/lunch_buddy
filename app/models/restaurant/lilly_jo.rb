@@ -63,6 +63,7 @@ module Restaurant
                .gsub(/#{"\xFC".dup.force_encoding("ASCII-8BIT")}/, 'uuee')
                .gsub(/#{"\xE9|\xE8".dup.force_encoding("ASCII-8BIT")}/, 'e')
                .gsub(/#{"\xE0".dup.force_encoding("ASCII-8BIT")}/, 'a')
+               .gsub(/#{"\xFB".dup.force_encoding("ASCII-8BIT")}/, 'u')
 
       # Workaround to make sure that 'ue' in 'sauer' doesn't turn to the umlaut
       str.gsub('aaee', 'ä')
