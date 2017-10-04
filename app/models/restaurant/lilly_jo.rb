@@ -19,11 +19,19 @@ module Restaurant
       menu_fragments(url, current_day).map(&method(:funnify))
     end
 
+    def all_fragments(url)
+      @all_fragments ||= PDF::Reader.new(open(url))
+                                    .objects
+                                    .values
+                                    .select { |v| v.class == Hash }
+                                    .map { |v| v[:ActualText] }
+    end
+
     def current_day_fragments(url, current_day)
-      pdf_reader(url).inject([[]], &method(:split_on_weekday_reducer))
-                     .group_by(&:first)[current_day]
-                     .first
-                     .drop(1)
+      all_fragments(url).inject([[]], &method(:split_on_weekday_reducer))
+                        .group_by(&:first)[current_day]
+                        .first
+                        .drop(1)
     end
 
     def menu_fragments(url, current_day)
@@ -84,18 +92,10 @@ module Restaurant
     end
 
     def ensure_current_year(url)
-      return true if pdf_reader(url)&.include?(Date.current.year.to_s)
+      return true if all_fragments(url)&.include?(Date.current.year.to_s)
 
-      @pdf_reader = nil
+      @all_fragments = nil
       false
-    end
-
-    def pdf_reader(url)
-      @pdf_reader ||= PDF::Reader.new(open(url))
-                                 .objects
-                                 .values
-                                 .select { |v| v.class == Hash }
-                                 .map { |v| v[:ActualText] }
     end
 
     def menu_url(date)
