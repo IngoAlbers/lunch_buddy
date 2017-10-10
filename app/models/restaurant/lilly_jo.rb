@@ -5,11 +5,8 @@ require 'open-uri'
 module Restaurant
   class LillyJo < BaseRestaurant
     def get_contents(date)
-      week = date.strftime('%W')
       current_day = I18n.l(date, format: '%A', locale: :de)
-      url = "https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf"
-
-      extract_menu(url, current_day)
+      extract_menu(menu_url(date), current_day)
     end
 
     def name
@@ -23,11 +20,11 @@ module Restaurant
     end
 
     def all_fragments(url)
-      PDF::Reader.new(open(url))
-                 .objects
-                 .values
-                 .select { |v| v.class == Hash }
-                 .map { |v| v[:ActualText] }
+      @all_fragments ||= PDF::Reader.new(open(url))
+                                    .objects
+                                    .values
+                                    .select { |v| v.class == Hash }
+                                    .map { |v| v[:ActualText] }
     end
 
     def current_day_fragments(url, current_day)
@@ -97,6 +94,24 @@ module Restaurant
     def regexify(str)
       str = +str
       Regexp.new(str.force_encoding('ASCII-8BIT'))
+    end
+
+    def ensure_current_year(url)
+      return true if all_fragments(url)&.include?(Date.current.year.to_s)
+
+      @all_fragments = nil
+      false
+    end
+
+    def menu_url(date)
+      week = date.strftime('%W')
+      url = "https://lillyjo.ch/wp-content/uploads/2015/09/lilly-jo_wochenmenue_kw-#{week}.pdf"
+
+      ensure_current_year(url) ? url : fallback_url(url)
+    end
+
+    def fallback_url(url)
+      "#{url.split('.pdf').first}-1.pdf"
     end
   end
 end
