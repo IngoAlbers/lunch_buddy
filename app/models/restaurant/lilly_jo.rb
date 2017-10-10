@@ -53,14 +53,14 @@ module Restaurant
     end
 
     def sanitize(str)
-      str = str.dup.force_encoding('ASCII-8BIT')
-               .gsub(/#{"\x00|\xFE|\xFF|\xA8".dup.force_encoding("ASCII-8BIT")}/, '')
-               .gsub(/#{"\xE4".dup.force_encoding("ASCII-8BIT")}/, 'aaee')
-               .gsub(/#{"\xF6".dup.force_encoding("ASCII-8BIT")}/, 'ooee')
-               .gsub(/#{"\xFC".dup.force_encoding("ASCII-8BIT")}/, 'uuee')
-               .gsub(/#{"\xE9|\xE8".dup.force_encoding("ASCII-8BIT")}/, 'e')
-               .gsub(/#{"\xE0".dup.force_encoding("ASCII-8BIT")}/, 'a')
-               .gsub(/#{"\xFB".dup.force_encoding("ASCII-8BIT")}/, 'u')
+      str = str.force_encoding('ASCII-8BIT')
+               .gsub(regexify('\x00|\xFE|\xFF|\xA8'), '')
+               .gsub(regexify('\xE4'), 'aaee')
+               .gsub(regexify('\xF6'), 'ooee')
+               .gsub(regexify('\xFC'), 'uuee')
+               .gsub(regexify('\xE9|\xE8'), 'e')
+               .gsub(regexify('\xE0'), 'a')
+               .gsub(regexify('\xFB'), 'u')
 
       # Workaround to make sure that 'ue' in 'sauer' doesn't turn to the umlaut
       str.gsub('aaee', 'ä')
@@ -89,6 +89,11 @@ module Restaurant
 
     def boldify(str)
       "*#{str}*"
+    end
+
+    def regexify(str)
+      str = +str
+      Regexp.new(str.force_encoding('ASCII-8BIT'))
     end
 
     def ensure_current_year(url)
