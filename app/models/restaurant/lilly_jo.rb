@@ -62,10 +62,22 @@ module Restaurant
                .gsub(regexify('\xE0'), 'a')
                .gsub(regexify('\xFB'), 'u')
 
+      umlautify(str)
+    end
+
+    def umlautify(str)
+      str = str.force_encoding('ASCII-8BIT')
+               .gsub(regexify('\xC4'), 'AAEE')
+               .gsub(regexify('\xD6'), 'OOEE')
+               .gsub(regexify('\xDC'), 'UUEE')
+
       # Workaround to make sure that 'ue' in 'sauer' doesn't turn to the umlaut
       str.gsub('aaee', 'ä')
+         .gsub('AAEE', 'Ä')
          .gsub('ooee', 'ö')
+         .gsub('OOEE', 'Ö')
          .gsub('uuee', 'ü')
+         .gsub('UUEE', 'Ü')
          .squish
     end
 
