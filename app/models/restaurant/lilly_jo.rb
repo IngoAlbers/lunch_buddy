@@ -61,6 +61,7 @@ module Restaurant
                .gsub(regexify('\xE9|\xE8'), 'e')
                .gsub(regexify('\xE0'), 'a')
                .gsub(regexify('\xFB'), 'u')
+               .gsub(regexify('\xF4'), 'o')
 
       umlautify(str)
     end
@@ -117,7 +118,7 @@ module Restaurant
 
     def menu_url(date)
       week = date.strftime('%W')
-      url = "https://lillyjo.ch/wp-content/uploads/2017/11/lilly-jo_wochenmenue_kw-#{week}.pdf"
+      url = "https://lillyjo.ch/wp-content/uploads/2017/12/lilly-jo_wochenmenue_kw-#{week}.pdf"
 
       ensure_current_year(url) ? url : fallback_url(url)
     end
