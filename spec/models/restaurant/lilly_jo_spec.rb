@@ -12,7 +12,7 @@ RSpec.describe Restaurant::LillyJo, type: :model do
   describe '#get_contents' do
     it 'returns the correct menus for specified day' do
       date = Date.parse('02-08-2017')
-      stub_request(:get, 'https://lillyjo.ch/wp-content/uploads/2017/11/lilly-jo_wochenmenue_kw-31.pdf')
+      stub_request(:get, 'https://lillyjo.ch/wp-content/uploads/2017/12/lilly-jo_wochenmenue_kw-31.pdf')
         .to_return(status: 200, body: file_fixture('lilly-jo_wochenmenue_kw-31.pdf'))
       expect(lilly_jo.get_contents(date)).to eq [menu1, menu2]
     end
@@ -20,9 +20,9 @@ RSpec.describe Restaurant::LillyJo, type: :model do
     context 'when the default menu is not of current year' do
       it 'returns menus from the fallback url' do
         date = Date.parse('03-10-2017')
-        stub_request(:get, 'https://lillyjo.ch/wp-content/uploads/2017/11/lilly-jo_wochenmenue_kw-40.pdf')
+        stub_request(:get, 'https://lillyjo.ch/wp-content/uploads/2017/12/lilly-jo_wochenmenue_kw-40.pdf')
           .to_return(status: 200, body: file_fixture('lilly-jo_wochenmenue_kw-40.pdf'))
-        stub_request(:get, 'https://lillyjo.ch/wp-content/uploads/2017/11/lilly-jo_wochenmenue_kw-40-1.pdf')
+        stub_request(:get, 'https://lillyjo.ch/wp-content/uploads/2017/12/lilly-jo_wochenmenue_kw-40-1.pdf')
           .to_return(status: 200, body: file_fixture('lilly-jo_wochenmenue_kw-40-1.pdf'))
 
         expect(lilly_jo.get_contents(date)).to eq [menu3, menu4]
