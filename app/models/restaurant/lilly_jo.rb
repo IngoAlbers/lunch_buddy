@@ -118,7 +118,10 @@ module Restaurant
 
     def menu_url(date)
       week = date.strftime('%W')
-      url = "https://lillyjo.ch/wp-content/uploads/2017/12/lilly-jo_wochenmenue_kw-#{week}.pdf"
+      month = date.strftime('%m')
+      year = date.strftime('%Y')
+
+      url = "https://lillyjo.ch/wp-content/uploads/#{year}/#{month}/lilly-jo_wochenmenue_kw-#{week}.pdf"
 
       ensure_current_year(url) ? url : fallback_url(url)
     end
