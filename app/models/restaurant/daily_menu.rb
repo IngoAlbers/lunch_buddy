@@ -22,7 +22,7 @@ module Restaurant
     end
 
     def self.slack_client
-      @client ||= SlackClient.new
+      @slack_client ||= SlackClient.new
     end
   end
 end

@@ -10,6 +10,7 @@ module Restaurant
 
     def self.gather_daily_menu(date = Date.today)
       return if self == BaseRestaurant
+
       restaurant = first_or_create
 
       restaurant.get_contents(date).each do |content|

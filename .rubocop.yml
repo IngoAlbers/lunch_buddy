@@ -3,8 +3,7 @@ AllCops:
     - db/schema.rb
     - vendor/**/*
     - node_modules/**/*
-    - bin/webpack
-    - bin/webpack-dev-server
+    - bin/**/*
   TargetRubyVersion: 2.4
 
 Metrics/LineLength:

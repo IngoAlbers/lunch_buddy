@@ -20,7 +20,7 @@ module Restaurant
     end
 
     def all_fragments(url)
-      @all_fragments ||= PDF::Reader.new(open(url))
+      @all_fragments ||= PDF::Reader.new(URI.parse(url).open)
                                     .objects
                                     .values
                                     .select { |v| v.class == Hash }
@@ -41,15 +41,15 @@ module Restaurant
                                              .reject { |x| x == '' }
     end
 
-    def split_on_weekday_reducer(acc, t)
+    def split_on_weekday_reducer(acc, target)
       *days, day = acc
       weekdays = %w[Montag Dienstag Mittwoch Donnerstag Freitag]
-      weekdays.include?(t) ? [*acc, [t]] : [*days, [*day, t]]
+      weekdays.include?(target) ? [*acc, [target]] : [*days, [*day, target]]
     end
 
-    def split_on_consecutive_nil_reducer(acc, t)
+    def split_on_consecutive_nil_reducer(acc, target)
       *segments, last_segment = acc
-      last_segment.last.nil? && t.nil? ? [*acc, [t]] : [*segments, [*last_segment, t]]
+      last_segment.last.nil? && target.nil? ? [*acc, [target]] : [*segments, [*last_segment, target]]
     end
 
     def sanitize(str)
