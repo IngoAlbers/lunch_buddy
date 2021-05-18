@@ -9,7 +9,7 @@ gem 'rails', '~> 5.1.1'
 # Use postgres as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma', '~> 4.3'
 
 gem 'execjs'
 gem 'turbolinks'
